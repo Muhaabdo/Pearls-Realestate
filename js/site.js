@@ -2,6 +2,7 @@
   const config = {
     whatsappPhone: "201000000000",
     callPhone: "201000000000",
+    mobileStickyEnabled: false,
     formio: {
       popupEndpoint: "",
       bottomEndpoint: "",
@@ -9,10 +10,381 @@
     }
   };
 
+  const LANG_KEY = "siteLang";
+  const ORIGINALS = new Map();
+  const originalDoc = {
+    title: document.title,
+    htmlLang: document.documentElement.lang || "en",
+    dir: document.documentElement.dir || "ltr"
+  };
+
+  function getPageKey() {
+    let name = window.location.pathname.split("/").pop() || "index.html";
+    if (!name || name === "/") name = "index.html";
+    if (!name.includes(".")) {
+      name = name === "index" ? "index.html" : name + ".html";
+    }
+    return name.replace(/\.html$/i, "");
+  }
+
+  function getCurrentLang() {
+    return document.documentElement.lang === "ar" ? "ar" : "en";
+  }
+
+  function rememberElement(el) {
+    if (!el || ORIGINALS.has(el)) return;
+    ORIGINALS.set(el, {
+      html: el.innerHTML,
+      attrs: {
+        placeholder: el.getAttribute("placeholder"),
+        "aria-label": el.getAttribute("aria-label"),
+        content: el.getAttribute("content")
+      }
+    });
+  }
+
+  function setText(selector, value) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    rememberElement(el);
+    el.textContent = value;
+  }
+
+  function setHtml(selector, value) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    rememberElement(el);
+    el.innerHTML = value;
+  }
+
+  function setAllText(selector, valueOrArray) {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    els.forEach(function (el, index) {
+      rememberElement(el);
+      if (Array.isArray(valueOrArray)) {
+        if (typeof valueOrArray[index] === "string") {
+          el.textContent = valueOrArray[index];
+        }
+      } else {
+        el.textContent = valueOrArray;
+      }
+    });
+  }
+
+  function setAttr(selector, attr, value) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    rememberElement(el);
+    el.setAttribute(attr, value);
+  }
+
+  function restoreEnglish() {
+    ORIGINALS.forEach(function (saved, el) {
+      if (!document.contains(el)) return;
+      el.innerHTML = saved.html;
+      Object.keys(saved.attrs).forEach(function (attrName) {
+        const attrValue = saved.attrs[attrName];
+        if (attrValue === null || typeof attrValue === "undefined") {
+          el.removeAttribute(attrName);
+        } else {
+          el.setAttribute(attrName, attrValue);
+        }
+      });
+    });
+
+    document.title = originalDoc.title;
+    document.documentElement.lang = "en";
+    document.documentElement.dir = "ltr";
+  }
+
+  function applyCommonArabic() {
+    setAllText(".main-nav a[href='index.html']", "الرئيسية");
+    setAllText(".main-nav a[href='contact.html']", "تواصل معنا");
+    setAllText(".main-nav a[href='privacy.html']", "الخصوصية");
+    setAllText(".main-nav a[href='disclaimer.html']", "إخلاء المسؤولية");
+    setAllText(".main-nav a[href='hyde-park-compounds.html']", "هايد بارك");
+    setAllText(".main-nav a[href='palm-hills-compounds.html']", "بالم هيلز");
+
+    setAllText(".footer-links a[href='privacy.html']", "سياسة الخصوصية");
+    setAllText(".footer-links a[href='disclaimer.html']", "إخلاء المسؤولية");
+    setAllText(".footer-links a[href='contact.html']", "تواصل معنا");
+    setAllText(".footer-links a[href='index.html']", "الرئيسية");
+
+    document.querySelectorAll(".badge-down").forEach(function (el) {
+      rememberElement(el);
+      el.innerHTML = el.innerHTML.replace("Down Payment: From", "مقدم: من");
+    });
+    document.querySelectorAll(".badge-install").forEach(function (el) {
+      rememberElement(el);
+      el.innerHTML = el.innerHTML.replace("Installments: Up to", "تقسيط حتى");
+    });
+    document.querySelectorAll(".price-pill").forEach(function (el) {
+      rememberElement(el);
+      el.innerHTML = el.innerHTML.replace("Prices start from:", "الأسعار تبدأ من:");
+    });
+
+    document.querySelectorAll(".whatsapp-action span").forEach(function (el) {
+      rememberElement(el);
+      el.textContent = "المزيد من التفاصيل";
+    });
+    document.querySelectorAll("[data-open-form]").forEach(function (el) {
+      rememberElement(el);
+      el.textContent = "احصل على الأسعار";
+    });
+
+    setAllText(".project-grid + .form-hint", "*الأسعار وأنظمة السداد استرشادية وقابلة للتغيير حسب التوافر ونوع الوحدة وشروط المطور الرسمية.");
+
+    if (document.querySelector(".cookie-banner p")) {
+      setHtml(".cookie-banner p", "يستخدم هذا الموقع ملفات تعريف الارتباط وأدوات التتبع لتحسين الأداء وتحليل الحملات. اقرأ <a href='privacy.html'>سياسة الخصوصية</a> و <a href='disclaimer.html'>إخلاء المسؤولية</a>.");
+      setText(".cookie-banner .js-cookie-close", "إغلاق");
+    }
+
+    if (document.querySelector(".mobile-sticky-btn.call span")) {
+      setText(".mobile-sticky-btn.call span", "اتصال");
+      setText(".mobile-sticky-btn.whatsapp span", "واتساب");
+    }
+  }
+
+  function applyArabicByPage() {
+    const page = getPageKey();
+    applyCommonArabic();
+
+    if (page === "index") {
+      document.title = "Pearls Real Estate | الرئيسية";
+      setText(".main-nav a[href='#projects']", "المشروعات");
+      setText(".hero h1", "فرص عقارية مميزة في مصر");
+      setText(".hero p", "استكشف أفضل المجتمعات السكنية مع أنظمة سداد مرنة ودعم مباشر من Pearls Real Estate.");
+      setText(".hero .btn-primary", "استعرض المشروعات");
+      setText("#projects .section-title", "المشروعات المميزة");
+      setText(".grid.grid-3 article:nth-of-type(1) .card-body p", "وحدات جاهزة للسكن في قلب القاهرة الجديدة مع لاندسكيب مميز وقيمة طويلة الأجل.");
+      setText(".grid.grid-3 article:nth-of-type(2) .card-body p", "فرص إطلاق قوية في New Cairo و New Capital مع أسعار مبكرة وأنظمة سداد مرنة.");
+      setText(".grid.grid-3 article:nth-of-type(3) .card-body p", "مشروعات PX و Badya في غرب القاهرة بماستر بلان متكامل وخيارات تقسيط ممتدة.");
+      setText(".grid.grid-3 article:nth-of-type(4) .card-body p", "امتلك في Palm Hills North Coast من Hacienda Waters حتى Ras El Hekma بتجربة صيفية راقية.");
+      setAllText(".grid.grid-3 .btn.btn-primary", "تفاصيل المشروع");
+    }
+
+    if (page === "hyde-park-compounds") {
+      document.title = "Pearls Real Estate - مشروعات Hyde Park";
+      setText(".main-nav a[href='#overview']", "نظرة عامة");
+      setText(".main-nav a[href='#available-projects']", "المشروعات المتاحة");
+      setText(".main-nav a[href='#developer']", "عن المطور");
+      setText(".main-nav a[href='#gallery']", "المعرض");
+      setText(".main-nav a[href='#contact-form']", "سجل الآن");
+      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Hyde Park</span>");
+      setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 5% مع تقسيط حتى 10 سنوات.");
+      setText(".hero p:nth-of-type(2)", "وحدات كاملة التشطيب متاحة.");
+      setText("#overview .section-title", "ملخص المشروع");
+      setText("#overview p", "استكشف مجتمعات سكنية مخططة بعناية مع أنظمة سداد عملية وبيانات مشروع موثوقة. الأسعار والخطط النهائية تختلف حسب نوع الوحدة والموقع والتوافر.");
+      setText("#available-projects .section-title", "المشروعات المتاحة");
+      setText("#developer .section-title", "عن المطور");
+      setText("#gallery .section-title", "معرض المشروع");
+      setText("#contact-form .section-title", "سجل اهتمامك الآن");
+      setText("#card-hyde-new-cairo .project-feature", "وحدات كاملة التشطيب مع خيارات استلام فوري في مراحل مختارة.");
+      setText("#card-hyde-central .project-feature", "إطلاق جديد في امتداد مميز بالقاهرة الجديدة مع مرونة في أنظمة السداد.");
+      setText("#card-seashore .project-feature", "جميع الوحدات كاملة التشطيب مع فرص تسليم مبكر.");
+      setText("#card-hyde-october .project-feature", "وحدات كاملة التشطيب متاحة، بما يشمل وحدات استلام فوري.");
+      setText("#developer .developer-kpi:nth-of-type(1) strong", "متميز");
+      setText("#developer .developer-kpi:nth-of-type(1) span", "مجتمعات مخططة بعناية في مواقع استراتيجية");
+      setText("#developer .developer-kpi:nth-of-type(2) strong", "مرن");
+      setText("#developer .developer-kpi:nth-of-type(2) span", "خطط سداد مناسبة لمختلف شرائح المشترين");
+      setText("#developer .developer-kpi:nth-of-type(3) strong", "طلب قوي");
+      setText("#developer .developer-kpi:nth-of-type(3) span", "معدلات إقبال مرتفعة في المواقع الحيوية");
+      setText("#developer .developer-card h3", "نبذة عن Hyde Park Developments");
+      setText("#developer .developer-points li:nth-of-type(1) span", "انطلقت في 2007 وتعمل بهويتها الحالية منذ 2011.");
+      setText("#developer .developer-points li:nth-of-type(2) span", "مشروعات مميزة في New Cairo و 6th Settlement و October و Ras El Hekma.");
+      setText("#developer .developer-points li:nth-of-type(3) span", "تطوير مجتمعات سكنية وتجارية وترفيهية بقيمة طويلة الأجل.");
+      setText("#developer .developer-trust", "مطور مؤسسي بخبرة قوية في التخطيط العمراني المتميز.");
+      setText("label[for='bottom-name']", "الاسم الكامل *");
+      setText("label[for='bottom-phone']", "رقم الهاتف *");
+      setText("label[for='bottom-project']", "المشروع *");
+      setText("label[for='bottom-email']", "البريد الإلكتروني");
+      setText("#bottom-project option:first-of-type", "اختر المشروع");
+      setText("#contact-form button[type='submit']", "إرسال");
+      setText(".modal-panel h3", "اترك بياناتك للحصول على الأسعار وأنظمة السداد");
+      setText("label[for='popup-name']", "الاسم الكامل *");
+      setText("label[for='popup-phone']", "رقم الهاتف *");
+      setText("label[for='popup-email']", "البريد الإلكتروني");
+      setText("label[for='popup-project']", "المشروع");
+      setText("label[for='popup-message']", "رسالة (اختياري)");
+      setAttr("#popup-message", "placeholder", "اكتب ميزانيتك أو المنطقة أو نوع الوحدة المفضل.");
+      setText(".modal-panel button[type='submit']", "إرسال الطلب");
+    }
+
+    if (page === "palm-hills-compounds" || page === "palm-hills-west-compounds" || page === "palm-hills-sahel-compounds") {
+      setText(".main-nav a[href='#overview']", "نظرة عامة");
+      setText(".main-nav a[href='#available-projects']", "المشروعات المتاحة");
+      setText(".main-nav a[href='#developer']", "عن المطور");
+      setText(".main-nav a[href='#gallery']", "المعرض");
+      setText(".main-nav a[href='#contact-form']", "سجل الآن");
+      setText("#available-projects .section-title", "المشروعات المتاحة");
+      setText("#developer .section-title", "عن المطور");
+      setText("#gallery .section-title", "معرض المشروع");
+      setText("#contact-form .section-title", "سجل اهتمامك الآن");
+      setText("#developer .developer-kpi:nth-of-type(1) strong", "متميز");
+      setText("#developer .developer-kpi:nth-of-type(1) span", "مجتمعات كبيرة في المدن الأعلى نموًا بمصر");
+      setText("#developer .developer-kpi:nth-of-type(2) strong", "مرن");
+      setText("#developer .developer-kpi:nth-of-type(2) span", "خطط سداد مناسبة للمشتري الفعلي والمستثمر");
+      setText("#developer .developer-kpi:nth-of-type(3) strong", "موثوق");
+      setText("#developer .developer-kpi:nth-of-type(3) span", "أكثر من 35 مشروعًا بمعدلات طلب قوية");
+      setText("#developer .developer-card h3", "نبذة عن Palm Hills Developments");
+      setText("#developer .developer-points li:nth-of-type(1) span", "مطور مصري مُدرج بالبورصة بمحفظة تتجاوز 35 مشروعًا.");
+      setText("#developer .developer-points li:nth-of-type(2) span", "تأسست في 1997 وتعمل بهويتها الحالية منذ 2005 بقيادة Yasseen Mansour.");
+      setText("#developer .developer-points li:nth-of-type(3) span", "محفظة تطوير تتجاوز 34.6 مليون متر مربع بين السكني والتجاري والساحلي.");
+      setText("#developer .developer-trust", "مطور موثوق يجمع بين الحجم وخبرة التسليم وقيمة استثمارية طويلة الأجل.");
+      setText("label[for='bottom-name']", "الاسم الكامل *");
+      setText("label[for='bottom-phone']", "رقم الهاتف *");
+      setText("label[for='bottom-project']", "المشروع *");
+      setText("label[for='bottom-email']", "البريد الإلكتروني");
+      setText("#bottom-project option:first-of-type", "اختر المشروع");
+      setText("#contact-form button[type='submit']", "إرسال");
+      setText(".modal-panel h3", "اترك بياناتك للحصول على الأسعار وأنظمة السداد");
+      setText("label[for='popup-name']", "الاسم الكامل *");
+      setText("label[for='popup-phone']", "رقم الهاتف *");
+      setText("label[for='popup-email']", "البريد الإلكتروني");
+      setText("label[for='popup-project']", "المشروع");
+      setText("label[for='popup-message']", "رسالة (اختياري)");
+      setAttr("#popup-message", "placeholder", "اكتب ميزانيتك أو المنطقة أو نوع الوحدة المفضل.");
+      setText(".modal-panel button[type='submit']", "إرسال الطلب");
+    }
+
+    if (page === "palm-hills-compounds") {
+      document.title = "Pearls Real Estate - مشروعات Palm Hills East";
+      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills East</span>");
+      setText(".hero p:nth-of-type(1)", "مشروعات Palm Hills New Cairo و Village de la Capitale في صفحة واحدة لمنطقة شرق القاهرة.");
+      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
+      setText("#overview .section-title", "لمحة سريعة: Palm Hills East");
+      setText("#overview p", "فرص مختارة في New Cairo و New Capital بأسعار طرح تنافسية وأنظمة سداد مرنة مع إمكانات نمو قوية على المدى الطويل.");
+      setText("#card-new-cairo .project-feature", "وحدات كاملة التشطيب متاحة مع خيارات استلام فوري في مراحل مختارة.");
+      setText("#card-village-capitale .project-feature", "إطلاق جديد مع خطط سداد مرنة وفرص نمو قوية داخل New Capital.");
+    }
+
+    if (page === "palm-hills-west-compounds") {
+      document.title = "Pearls Real Estate - مشروعات Palm Hills West";
+      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills West</span>");
+      setText(".hero p:nth-of-type(1)", "اكتشف PX و Badya في October بمفهوم معيشي عملي وقيمة نمو قوية.");
+      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
+      setText("#overview .section-title", "لمحة سريعة: Palm Hills West");
+      setText("#overview p", "اكتشف مشروعات PX و Badya في October City بماستر بلان عائلي متكامل، وأنظمة سداد عملية، ومخزون فاخر كامل التشطيب.");
+      setText("#card-px .project-feature", "وحدات كاملة التشطيب مع فرص تسليم مبكر في مراحل مختارة.");
+      setText("#card-badya .project-feature", "وحدات كاملة التشطيب مع خطط سداد مرنة وخيارات استلام فوري.");
+    }
+
+    if (page === "palm-hills-sahel-compounds") {
+      document.title = "Pearls Real Estate - مشروعات Palm Hills North Coast";
+      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills North Coast</span>");
+      setText(".hero p:nth-of-type(1)", "كل فرص Palm Hills في North Coast في صفحة واحدة، من Hacienda Waters إلى Hacienda Ras El Hekma.");
+      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 2.5% مع تقسيط حتى 12 سنة.");
+      setText("#overview .section-title", "لمحة سريعة: Palm Hills North Coast");
+      setText("#overview p", "مجموعة ساحلية راقية من Hacienda Waters حتى Ras El Hekma تجمع بين أسلوب صيفي متميز، وجاذبية إيجارية قوية، وخطط سداد مرنة.");
+      setText("#card-hacienda-waters .project-feature", "خطط سداد مرنة مع وحدات كاملة التشطيب.");
+      setText("#card-hacienda-blue .project-feature", "منازل ساحلية كاملة التشطيب مع خطط سداد مرنة.");
+      setText("#card-hacienda-west .project-feature", "خيارات استلام فوري ووحدات كاملة التشطيب في عنوان ساحلي مميز.");
+      setText("#card-hacienda-raselhekma .project-feature", "إطلاق جديد بتشطيبات كاملة وتكييفات ومطابخ، مع إطلالات مائية لمعظم الوحدات.");
+    }
+
+    if (page === "privacy") {
+      document.title = "سياسة الخصوصية - Pearls Real Estate";
+      setText("main h1", "سياسة الخصوصية");
+      setText("main p:nth-of-type(1)", "توضح سياسة الخصوصية هذه كيفية جمع واستخدام Pearls Real Estate للبيانات الشخصية المقدمة عبر هذا الموقع ونماذج الحملات.");
+      setAllText("main h3", ["البيانات التي نجمعها", "كيف نستخدم بياناتك", "التتبع والتحليلات", "مشاركة البيانات", "دقة البيانات والتحديثات", "حقوقك", "التواصل"]);
+      setText("main p:nth-of-type(2)", "قد نجمع الاسم ورقم الهاتف والبريد الإلكتروني والمشروع المختار وتفاصيل الاستفسار عند إرسال النماذج أو التواصل معنا.");
+      setText("main p:nth-of-type(3)", "تُستخدم بياناتك للرد على الاستفسار ومشاركة الأسعار وأنظمة السداد المطلوبة وتقديم تحديثات المشروعات ذات الصلة. نحن لا نبيع بياناتك الشخصية.");
+      setText("main p:nth-of-type(4)", "نستخدم ملفات تعريف الارتباط وأدوات القياس لفهم أداء الموقع وتحسين جودة العملاء المحتملين. وقد تشمل بيانات التتبع زيارات الصفحات ونقرات الأزرار وأحداث النماذج.");
+      setText("main p:nth-of-type(5)", "قد نشارك بيانات الاستفسار مع فرق المبيعات المعتمدة وشركاء المشروعات عند الحاجة فقط لتقديم المعلومات والمتابعة.");
+      setText("main p:nth-of-type(6)", "تفاصيل المشروع والأسعار وخيارات السداد والتوافر قابلة للتغيير. الشروط النهائية تعتمد دائمًا على وثائق المطور الرسمية وعقود الحجز.");
+      setText("main p:nth-of-type(7)", "يمكنك طلب تصحيح أو حذف بياناتك عبر صفحة التواصل.");
+      setText("main p:nth-of-type(8)", "لطلبات الخصوصية، يرجى استخدام نموذج التواصل في صفحة التواصل.");
+    }
+
+    if (page === "disclaimer") {
+      document.title = "إخلاء المسؤولية - Pearls Real Estate";
+      setText("main h1", "إخلاء المسؤولية");
+      setText("main p:nth-of-type(1)", "المحتوى المعروض في هذا الموقع لأغراض تسويقية ومعلوماتية فقط ولا يُعد عرضًا ملزمًا أو التزامًا تعاقديًا أو استشارة قانونية.");
+      setAllText("main h3", ["الأسعار وأنظمة السداد", "التوافر", "معلومات المشروع", "عدم وجود ضمان", "مصادر خارجية"]);
+      setText("main p:nth-of-type(2)", "أي إشارات مثل \"تبدأ من\" أو \"مقدم من 5%\" أو \"تقسيط حتى 10 سنوات\" هي معلومات استرشادية وقد تختلف حسب المرحلة ونوع الوحدة وشروط المطور.");
+      setText("main p:nth-of-type(3)", "قد يتغير توافر الوحدات دون إشعار مسبق. ولا يتم تأكيد الحجز إلا بعد استكمال الإجراءات الرسمية وتوقيع المستندات.");
+      setText("main p:nth-of-type(4)", "الصور والمواد المرئية قد تتضمن تصورات أو أمثلة تمثيلية. والمواصفات النهائية يحددها المطور.");
+      setText("main p:nth-of-type(5)", "لا تضمن Pearls Real Estate عوائد استثمارية أو نسب نمو أو عائد إيجاري. ويُنصح بمراجعة المستندات الرسمية والحصول على استشارة مستقلة عند الحاجة.");
+      setText("main p:nth-of-type(6)", "قد تأتي بعض تفاصيل المشروعات من المطورين أو الشركاء المعتمدين. ونحرص على الدقة مع احتمالية تحديث البيانات بمرور الوقت.");
+    }
+
+    if (page === "contact") {
+      document.title = "تواصل معنا - Pearls Real Estate";
+      setText("main h1", "تواصل مع Pearls Real Estate");
+      setText("main .card p", "اترك بياناتك وسيتواصل معك فريقنا بأحدث الأسعار والتوافر وأنظمة السداد.");
+      setText("label[for='contact-name']", "الاسم الكامل *");
+      setText("label[for='contact-phone']", "رقم الهاتف *");
+      setText("label[for='contact-project']", "المشروع *");
+      setText("label[for='contact-email']", "البريد الإلكتروني");
+      setText("label[for='contact-message']", "رسالة (اختياري)");
+      setAttr("#contact-phone", "placeholder", "اكتب الرقم مع كود الدولة، مثال: +201012345678");
+      setAttr("#contact-message", "placeholder", "اكتب تفضيلاتك أو ميزانيتك أو المنطقة المطلوبة.");
+      setText("#contact-project option:first-of-type", "اختر المشروع");
+      setText("button[type='submit']", "إرسال");
+    }
+
+    if (page === "thank-you") {
+      document.title = "شكرًا لك - Pearls Real Estate";
+      setText("main h1", "شكرًا لك");
+      setText("main p:nth-of-type(1)", "تم إرسال طلبك بنجاح.");
+      setText("main p:nth-of-type(2)", "سيتواصل فريقنا معك قريبًا بخصوص الأسعار والتوافر وأنظمة السداد.");
+      setText("main .btn-primary", "العودة للرئيسية");
+      setText("main .btn-secondary", "إرسال طلب جديد");
+    }
+  }
+
+  function renderLanguage(lang) {
+    if (lang === "ar") {
+      applyArabicByPage();
+      document.documentElement.lang = "ar";
+      document.documentElement.dir = "rtl";
+    } else {
+      restoreEnglish();
+    }
+    initWhatsAppLinks();
+    updateLanguageControls(lang);
+    localStorage.setItem(LANG_KEY, lang);
+  }
+
+  function createSwitchControl(className) {
+    const wrap = document.createElement("div");
+    wrap.className = className + " lang-switch";
+    wrap.innerHTML = "<button type='button' class='lang-btn' data-lang='en'>EN</button><button type='button' class='lang-btn' data-lang='ar'>عربى</button>";
+    wrap.querySelectorAll(".lang-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const selected = btn.getAttribute("data-lang");
+        renderLanguage(selected);
+      });
+    });
+    return wrap;
+  }
+
+  function updateLanguageControls(lang) {
+    document.querySelectorAll(".lang-switch .lang-btn").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+  }
+
+  function initLanguageControls() {
+    const headerInner = document.querySelector(".header-inner");
+    if (headerInner && !document.querySelector(".lang-switch-desktop")) {
+      headerInner.appendChild(createSwitchControl("lang-switch-desktop"));
+    }
+
+    if (!document.querySelector(".lang-switch-fab")) {
+      const fab = createSwitchControl("lang-switch-fab");
+      document.body.appendChild(fab);
+    }
+  }
+
   if (window.PEARLS_CONFIG) {
     const merged = window.PEARLS_CONFIG;
     if (merged.whatsappPhone) config.whatsappPhone = merged.whatsappPhone;
     if (merged.callPhone) config.callPhone = merged.callPhone;
+    if (typeof merged.mobileStickyEnabled === "boolean") {
+      config.mobileStickyEnabled = merged.mobileStickyEnabled;
+    }
     if (merged.formio) {
       config.formio.popupEndpoint = merged.formio.popupEndpoint || "";
       config.formio.bottomEndpoint = merged.formio.bottomEndpoint || "";
@@ -103,7 +475,8 @@
   }
 
   function createWhatsAppHref(projectName) {
-    const text = encodeURIComponent("I am interested in prices and payment plans for " + projectName + ".");
+    const textValue = "I am interested in prices and payment plans for " + projectName + ".";
+    const text = encodeURIComponent(textValue);
     return "https://wa.me/" + config.whatsappPhone + "?text=" + text;
   }
 
@@ -164,7 +537,11 @@
         if (responseBox) responseBox.textContent = "";
 
         if (phoneInput && !isValidPhone(phoneInput.value)) {
-          if (responseBox) responseBox.textContent = "Please enter a valid phone number with country code.";
+          if (responseBox) {
+            responseBox.textContent = getCurrentLang() === "ar"
+              ? "يرجى إدخال رقم هاتف صحيح مع كود الدولة."
+              : "Please enter a valid phone number with country code.";
+          }
           phoneInput.focus();
           return;
         }
@@ -196,7 +573,11 @@
             finalize();
           })
           .catch(function () {
-            if (responseBox) responseBox.textContent = "Submission failed. Please try again or contact us on WhatsApp.";
+            if (responseBox) {
+              responseBox.textContent = getCurrentLang() === "ar"
+                ? "تعذر إرسال الطلب. حاول مرة أخرى أو تواصل معنا عبر واتساب."
+                : "Submission failed. Please try again or contact us on WhatsApp.";
+            }
             if (submitButton) submitButton.disabled = false;
           });
       });
@@ -291,6 +672,7 @@
   }
 
   function injectMobileStickyBar() {
+    if (!config.mobileStickyEnabled) return;
     if (document.querySelector(".mobile-sticky-bar")) return;
     const bar = document.createElement("div");
     const callHref = "tel:+" + config.callPhone;
@@ -303,6 +685,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     const menuApi = initBurgerMenu();
+    initLanguageControls();
     initMobileHeaderScroll(menuApi);
     initSmoothScroll();
     initWhatsAppLinks();
@@ -311,5 +694,6 @@
     initCarousels();
     injectCookieBanner();
     injectMobileStickyBar();
+    renderLanguage(localStorage.getItem(LANG_KEY) || "ar");
   });
 })();
