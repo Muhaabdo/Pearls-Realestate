@@ -651,7 +651,31 @@ a {
 }
 
 html[dir="rtl"] body {
+  font-family: "Tahoma", "Arial", "Segoe UI", sans-serif;
   text-align: right;
+}
+
+html[dir="rtl"] .brand,
+html[dir="rtl"] .btn,
+html[dir="rtl"] .main-nav a,
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .project-feature,
+html[dir="rtl"] label,
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  letter-spacing: 0;
+}
+
+html[dir="rtl"] .btn {
+  font-size: 0.87rem;
+  padding: 0.72rem 1.02rem;
+}
+
+html[dir="rtl"] .project-card .cta-row .btn {
+  font-size: 0.8rem;
+  min-height: 40px;
+  padding: 0.56rem 0.64rem;
 }
 
 html[dir="rtl"] .main-nav ul {
@@ -1000,6 +1024,17 @@ select {
   .main-nav ul {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.22rem;
+  }
+
+  .main-nav li {
+    width: 100%;
+  }
+
+  .main-nav a {
+    display: block;
+    width: 100%;
+    padding: 0.52rem 0;
   }
 
   .grid-3 {
@@ -1042,7 +1077,37 @@ select {
   }
 
   html[dir="rtl"] .main-nav ul {
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  html[dir="rtl"] .main-nav li {
+    width: 100%;
+    text-align: right;
+  }
+
+  html[dir="rtl"] .main-nav a {
+    width: 100%;
+    display: block;
+    text-align: right;
+  }
+
+  html[dir="rtl"] .legal-link {
+    display: inline-flex;
+    width: auto;
+    padding: 0.32rem 0.62rem;
+    font-size: 0.84rem;
+  }
+
+  html[dir="rtl"] .btn {
+    font-size: 0.83rem;
+    padding: 0.62rem 0.9rem;
+  }
+
+  html[dir="rtl"] .project-card .cta-row .btn {
+    font-size: 0.76rem;
+    min-height: 38px;
+    padding: 0.5rem 0.54rem;
   }
 
   html[dir="rtl"] .cookie-banner {
