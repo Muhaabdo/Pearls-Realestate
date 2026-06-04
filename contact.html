@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-562GPGBF');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Pearls Real Estate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-562GPGBF"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Pearls Real Estate</a>
+      <button class="burger" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="hyde-park-compounds.html">Hyde Park</a></li>
+          <li><a href="palm-hills-compounds.html">Palm Hills</a></li>
+          <li><a href="signature-compounds.html">Signature</a></li>
+          <li><a class="legal-link" href="privacy.html">Privacy</a></li>
+          <li><a class="legal-link" href="disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 class="section-title">Contact Pearls Real Estate</h1>
+      <div class="card" style="padding: 1.2rem; max-width: 760px;">
+        <p>Leave your details and our team will contact you with the latest prices, availability, and payment plans.</p>
+        <form class="js-lead-form" data-form-type="contact" data-redirect="thank-you.html" novalidate>
+          <label for="contact-name">Full Name *</label>
+          <input id="contact-name" name="name" type="text" required>
+
+          <label for="contact-phone">Phone Number *</label>
+          <input id="contact-phone" name="phone" type="tel" placeholder="Include country code, example: +201012345678" required>
+
+          <label for="contact-project">Project *</label>
+          <select id="contact-project" name="project" required>
+            <option value="">Select project</option>
+            <option value="Hyde Park Compounds">Hyde Park Compounds</option>
+            <option value="Palm Hills Compounds">Palm Hills Compounds</option>
+            <option value="Signature Compounds">Signature Compounds</option>
+          </select>
+
+          <label for="contact-email">Email</label>
+          <input id="contact-email" name="email" type="email" placeholder="name@example.com">
+
+          <label for="contact-message">Message (Optional)</label>
+          <textarea id="contact-message" name="message" rows="4" placeholder="Share any preferences or budget details."></textarea>
+
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <p class="js-form-response form-hint" aria-live="polite"></p>
+          <p class="form-hint">By clicking submit, you agree to our <a href="privacy.html">Privacy Policy</a> and <a href="disclaimer.html">Disclaimer</a>, and you consent to be contacted regarding this inquiry.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Pearls Real Estate</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.PEARLS_CONFIG = {
+      whatsappPhone: "201000000000",
+      formio: {
+        contactEndpoint: ""
+      }
+    };
+  </script>
+  <script src="js/site.js"></script>
+</body>
+</html>
