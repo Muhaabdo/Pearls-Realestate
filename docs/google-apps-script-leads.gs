@@ -5,7 +5,7 @@
 
 const SHEET_ID = "1Rqt1Kk-QvY2jvwjT14YXnj0sTGWxggebkBtlLlkVBmg";
 const SHEET_NAME = "Leads";
-const HEADERS = [
+const BASE_HEADERS = [
   "timestamp",
   "name",
   "phone",
@@ -31,31 +31,42 @@ function doPost(e) {
     if (!sheet) {
       sheet = spreadsheet.insertSheet(SHEET_NAME);
     }
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(HEADERS);
-    }
-
-    const row = [
-      new Date(),
-      safe(data.name),
-      safe(data.phone),
-      safe(data.email),
-      safe(data.project),
-      safe(data.message),
-      safe(data.formType),
-      safe(data.sourcePage),
-      safe(data.gclid),
-      safe(data.firstTouchTime),
-      safe(data.firstTouchPage),
-      safe(data.sessionId),
-      safe(data.submittedAt)
-    ];
+    const headers = ensureHeaders(sheet, data);
+    const row = buildRow(headers, data);
 
     sheet.appendRow(row);
     return jsonResponse({ ok: true });
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err) }, 500);
   }
+}
+
+function ensureHeaders(sheet, data) {
+  const hasHeader = sheet.getLastRow() > 0;
+  let headers = hasHeader
+    ? sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(safe)
+    : BASE_HEADERS.slice();
+
+  if (!hasHeader) {
+    sheet.appendRow(headers);
+  }
+
+  // Add new columns for any fields coming from any form type.
+  Object.keys(data).forEach(function (key) {
+    if (headers.indexOf(key) === -1) {
+      headers.push(key);
+      sheet.getRange(1, headers.length).setValue(key);
+    }
+  });
+
+  return headers;
+}
+
+function buildRow(headers, data) {
+  return headers.map(function (header) {
+    if (header === "timestamp") return new Date();
+    return safe(data[header]);
+  });
 }
 
 function doGet() {
