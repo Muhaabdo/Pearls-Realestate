@@ -1,9 +1,12 @@
 (function () {
+  const LEAD_ATTR_KEY = "pearlsLeadAttribution";
+
   const config = {
     whatsappPhone: "201000000000",
     callPhone: "201000000000",
     mobileStickyEnabled: false,
     formio: {
+      endpoint: "https://script.google.com/macros/s/AKfycbz3hDzps2Uf8jmzv1KHNgvi7fxyrrQFi0MH0FqfQAigrla6MLiCj9WeYNoAJBVJtxu9XA/exec",
       popupEndpoint: "",
       bottomEndpoint: "",
       contactEndpoint: ""
@@ -29,6 +32,48 @@
 
   function getCurrentLang() {
     return document.documentElement.lang === "ar" ? "ar" : "en";
+  }
+
+  function readAttribution() {
+    try {
+      const raw = localStorage.getItem(LEAD_ATTR_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function writeAttribution(data) {
+    try {
+      localStorage.setItem(LEAD_ATTR_KEY, JSON.stringify(data));
+    } catch (_) {
+      // Ignore storage failures and continue without persistence.
+    }
+  }
+
+  function initLeadAttribution() {
+    const pageKey = getPageKey();
+    const params = new URLSearchParams(window.location.search);
+    const currentGclid = params.get("gclid") || "";
+    const existing = readAttribution();
+
+    const attribution = {
+      sessionId: existing.sessionId || ("session-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8)),
+      firstTouchTime: existing.firstTouchTime || new Date().toISOString(),
+      firstTouchPage: existing.firstTouchPage || pageKey,
+      gclid: existing.gclid || currentGclid || ""
+    };
+
+    writeAttribution(attribution);
+    return attribution;
+  }
+
+  function getLeadAttribution() {
+    const data = readAttribution();
+    if (!data.sessionId || !data.firstTouchTime || !data.firstTouchPage) {
+      return initLeadAttribution();
+    }
+    return data;
   }
 
   function rememberElement(el) {
@@ -386,9 +431,18 @@
       config.mobileStickyEnabled = merged.mobileStickyEnabled;
     }
     if (merged.formio) {
-      config.formio.popupEndpoint = merged.formio.popupEndpoint || "";
-      config.formio.bottomEndpoint = merged.formio.bottomEndpoint || "";
-      config.formio.contactEndpoint = merged.formio.contactEndpoint || "";
+      if (Object.prototype.hasOwnProperty.call(merged.formio, "endpoint")) {
+        config.formio.endpoint = merged.formio.endpoint || "";
+      }
+      if (Object.prototype.hasOwnProperty.call(merged.formio, "popupEndpoint")) {
+        config.formio.popupEndpoint = merged.formio.popupEndpoint || "";
+      }
+      if (Object.prototype.hasOwnProperty.call(merged.formio, "bottomEndpoint")) {
+        config.formio.bottomEndpoint = merged.formio.bottomEndpoint || "";
+      }
+      if (Object.prototype.hasOwnProperty.call(merged.formio, "contactEndpoint")) {
+        config.formio.contactEndpoint = merged.formio.contactEndpoint || "";
+      }
     }
   }
 
@@ -510,10 +564,10 @@
   }
 
   function getEndpoint(formType) {
-    if (formType === "popup") return config.formio.popupEndpoint;
-    if (formType === "bottom") return config.formio.bottomEndpoint;
-    if (formType === "contact") return config.formio.contactEndpoint;
-    return "";
+    if (formType === "popup") return config.formio.popupEndpoint || config.formio.endpoint;
+    if (formType === "bottom") return config.formio.bottomEndpoint || config.formio.endpoint;
+    if (formType === "contact") return config.formio.contactEndpoint || config.formio.endpoint;
+    return config.formio.endpoint || "";
   }
 
   function isValidPhone(phone) {
@@ -551,6 +605,15 @@
           payload[key] = String(value).trim();
         });
 
+        const attribution = getLeadAttribution();
+        payload.formType = form.getAttribute("data-form-type") || "unknown";
+        payload.sourcePage = getPageKey();
+        payload.gclid = attribution.gclid || "";
+        payload.firstTouchTime = attribution.firstTouchTime || "";
+        payload.firstTouchPage = attribution.firstTouchPage || "";
+        payload.sessionId = attribution.sessionId || "";
+        payload.submittedAt = new Date().toISOString();
+
         const endpoint = getEndpoint(form.getAttribute("data-form-type") || "");
         const redirectUrl = form.getAttribute("data-redirect") || "thank-you.html";
         const submitButton = form.querySelector("button[type='submit']");
@@ -561,7 +624,12 @@
         };
 
         if (!endpoint) {
-          setTimeout(finalize, 500);
+          if (responseBox) {
+            responseBox.textContent = getCurrentLang() === "ar"
+              ? "لم يتم إعداد رابط استقبال البيانات بعد. يرجى إضافة رابط Apps Script أولًا."
+              : "Lead endpoint is not configured yet. Please add the Apps Script endpoint first.";
+          }
+          if (submitButton) submitButton.disabled = false;
           return;
         }
 
@@ -684,6 +752,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    initLeadAttribution();
     const menuApi = initBurgerMenu();
     initLanguageControls();
     initMobileHeaderScroll(menuApi);
