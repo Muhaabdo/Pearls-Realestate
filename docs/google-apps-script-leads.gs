@@ -23,7 +23,7 @@ const HEADERS = [
 
 function doPost(e) {
   try {
-    const body = JSON.parse(e.postData.contents || "{}");
+    const body = parseBody(e);
     const data = body.data || {};
 
     const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
@@ -55,6 +55,27 @@ function doPost(e) {
     return jsonResponse({ ok: true });
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err) }, 500);
+  }
+}
+
+function doGet() {
+  return jsonResponse({ ok: true, message: "Lead endpoint is running" }, 200);
+}
+
+function parseBody(e) {
+  if (!e || !e.postData || !e.postData.contents) return {};
+  const raw = e.postData.contents;
+
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    // Fallback for x-www-form-urlencoded submissions containing data=...
+    try {
+      const parsed = JSON.parse(raw.replace(/^data=/, ""));
+      return parsed;
+    } catch (_) {
+      return {};
+    }
   }
 }
 
