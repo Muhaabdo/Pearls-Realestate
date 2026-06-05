@@ -575,33 +575,30 @@
   }
 
   function submitPayload(endpoint, payload) {
-    const body = JSON.stringify({ data: payload });
     const request = {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: body
+      body: JSON.stringify({ data: payload })
     };
 
     return fetch(endpoint, request)
       .then(function (response) {
-        return {
-          accepted: response.ok,
-          opaque: false
-        };
+        if (!response.ok) {
+          return { accepted: false };
+        }
+
+        return response.json()
+          .then(function (json) {
+            return { accepted: !!(json && json.ok === true) };
+          })
+          .catch(function () {
+            return { accepted: false };
+          });
       })
       .catch(function () {
-        // Apps Script endpoints can fail CORS checks; no-cors still delivers the POST.
-        return fetch(endpoint, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: body
-        }).then(function () {
-          return {
-            accepted: true,
-            opaque: true
-          };
-        });
+        return {
+          accepted: false
+        };
       });
   }
 
