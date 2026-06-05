@@ -606,6 +606,8 @@
     document.querySelectorAll(".js-lead-form").forEach(function (form) {
       form.addEventListener("submit", function (event) {
         event.preventDefault();
+        if (form.dataset.submitting === "1") return;
+
         const phoneInput = form.querySelector("input[name='phone']");
         const responseBox = form.querySelector(".js-form-response");
         if (responseBox) responseBox.textContent = "";
@@ -637,10 +639,31 @@
         const endpoint = getEndpoint(form.getAttribute("data-form-type") || "");
         const redirectUrl = form.getAttribute("data-redirect") || "thank-you.html";
         const submitButton = form.querySelector("button[type='submit']");
-        if (submitButton) submitButton.disabled = true;
+        const originalButtonLabel = submitButton ? submitButton.textContent : "";
+
+        form.dataset.submitting = "1";
+        form.setAttribute("aria-busy", "true");
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = getCurrentLang() === "ar" ? "جارٍ الإرسال..." : "Submitting...";
+        }
+        if (responseBox) {
+          responseBox.textContent = getCurrentLang() === "ar"
+            ? "جارٍ إرسال الطلب، يرجى الانتظار..."
+            : "Submitting your request, please wait...";
+        }
 
         const finalize = function () {
           window.location.href = redirectUrl;
+        };
+
+        const resetSubmittingState = function () {
+          form.dataset.submitting = "0";
+          form.removeAttribute("aria-busy");
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonLabel;
+          }
         };
 
         if (!endpoint) {
@@ -649,7 +672,7 @@
               ? "لم يتم إعداد رابط استقبال البيانات بعد. يرجى إضافة رابط Apps Script أولًا."
               : "Lead endpoint is not configured yet. Please add the Apps Script endpoint first.";
           }
-          if (submitButton) submitButton.disabled = false;
+          resetSubmittingState();
           return;
         }
 
@@ -666,7 +689,7 @@
                 ? "تعذر إرسال الطلب. حاول مرة أخرى أو تواصل معنا عبر واتساب."
                 : "Submission failed. Please try again or contact us on WhatsApp.";
             }
-            if (submitButton) submitButton.disabled = false;
+            resetSubmittingState();
           });
       });
     });
