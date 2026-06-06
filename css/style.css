@@ -229,6 +229,22 @@ a {
   color: #1f1a0d;
 }
 
+.hyde-overview-copy .section-title {
+  font-size: clamp(1.3rem, 2.75vw, 1.8rem);
+}
+
+.hyde-overview-copy p {
+  font-size: clamp(0.92rem, 1.5vw, 1rem);
+}
+
+.palm-overview-copy .section-title {
+  font-size: clamp(1.34rem, 2.95vw, 1.9rem);
+}
+
+.palm-overview-copy p {
+  font-size: clamp(0.93rem, 1.45vw, 1rem);
+}
+
 #available-projects .section-title,
 #contact-form .section-title {
   width: fit-content;
@@ -898,11 +914,13 @@ select {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: #000;
+  background: linear-gradient(180deg, #0b0b0b, #121212);
+  border: 1px solid rgba(204, 171, 68, 0.28);
 }
 
 .carousel-track {
   display: flex;
+  direction: ltr;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -917,10 +935,41 @@ select {
 
 .carousel-track img {
   width: 100%;
-  height: 390px;
-  object-fit: cover;
+  height: clamp(320px, 38vw, 520px);
+  object-fit: contain;
+  background: #0f0f0f;
+  padding: 0.4rem;
   flex: 0 0 100%;
   scroll-snap-align: start;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(204, 171, 68, 0.7);
+  background: rgba(0, 0, 0, 0.62);
+  color: #f6e9c3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.carousel-arrow:hover {
+  background: rgba(204, 171, 68, 0.22);
+}
+
+.carousel-arrow-prev {
+  left: 0.8rem;
+}
+
+.carousel-arrow-next {
+  right: 0.8rem;
 }
 
 .carousel-dots {
@@ -1056,6 +1105,19 @@ select {
 
   .carousel-track img {
     height: 270px;
+  }
+
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-arrow-prev {
+    left: 0.5rem;
+  }
+
+  .carousel-arrow-next {
+    right: 0.5rem;
   }
 
   .mobile-sticky-bar {

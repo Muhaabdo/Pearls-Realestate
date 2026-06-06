@@ -210,17 +210,17 @@
     }
 
     if (page === "hyde-park-compounds") {
-      document.title = "Pearls Real Estate - مشروعات Hyde Park";
+      document.title = "Pearls Real Estate - Hyde Park Compounds";
       setText(".main-nav a[href='#overview']", "نظرة عامة");
       setText(".main-nav a[href='#available-projects']", "المشروعات المتاحة");
       setText(".main-nav a[href='#developer']", "عن المطور");
       setText(".main-nav a[href='#gallery']", "المعرض");
       setText(".main-nav a[href='#contact-form']", "سجل الآن");
-      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Hyde Park</span>");
+      setText(".hero h1", "Hyde Park Compounds");
       setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 5% مع تقسيط حتى 10 سنوات.");
       setText(".hero p:nth-of-type(2)", "وحدات كاملة التشطيب متاحة.");
-      setText("#overview .section-title", "ملخص المشروع");
-      setText("#overview p", "استكشف مجتمعات سكنية مخططة بعناية مع أنظمة سداد عملية وبيانات مشروع موثوقة. الأسعار والخطط النهائية تختلف حسب نوع الوحدة والموقع والتوافر.");
+      setText("#overview .section-title", "اكتشف عالم هايد بارك من المجتمعات المتكاملة");
+      setText("#overview p", "تطور هايد بارك مجتمعات نابضة بالحياة في أهم الوجهات المصرية، حيث تلتقي الطبيعة والتصميم والخدمات في تجربة متكاملة تعكس مفهومًا جديدًا للعيش والاستثمار.");
       setText("#available-projects .section-title", "المشروعات المتاحة");
       setText("#developer .section-title", "عن المطور");
       setText("#gallery .section-title", "معرض المشروع");
@@ -294,38 +294,37 @@
     }
 
     if (page === "palm-hills-compounds") {
-      document.title = "Pearls Real Estate - مشروعات Palm Hills East";
-      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills East</span>");
-      setText(".hero p:nth-of-type(1)", "مشروعات Palm Hills New Cairo و Village de la Capitale في صفحة واحدة لمنطقة شرق القاهرة.");
-      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
-      setText("#overview .section-title", "لمحة سريعة: Palm Hills East");
-      setText("#overview p", "فرص مختارة في New Cairo و New Capital بأسعار طرح تنافسية وأنظمة سداد مرنة مع إمكانات نمو قوية على المدى الطويل.");
+      document.title = "Pearls Real Estate - Palm Hills East Compounds";
+      setText(".hero h1", "Palm Hills East Compounds");
+      setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
+      setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
+      setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
       setText("#card-new-cairo .project-feature", "وحدات كاملة التشطيب متاحة مع خيارات استلام فوري في مراحل مختارة.");
       setText("#card-village-capitale .project-feature", "إطلاق جديد مع خطط سداد مرنة وفرص نمو قوية داخل New Capital.");
     }
 
     if (page === "palm-hills-west-compounds") {
-      document.title = "Pearls Real Estate - مشروعات Palm Hills West";
-      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills West</span>");
-      setText(".hero p:nth-of-type(1)", "اكتشف PX و Badya في October بمفهوم معيشي عملي وقيمة نمو قوية.");
-      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
-      setText("#overview .section-title", "لمحة سريعة: Palm Hills West");
-      setText("#overview p", "اكتشف مشروعات PX و Badya في October City بماستر بلان عائلي متكامل، وأنظمة سداد عملية، ومخزون فاخر كامل التشطيب.");
+      document.title = "Pearls Real Estate - Palm Hills West Compounds";
+      setText(".hero h1", "Palm Hills West Compounds");
+      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 1.5% فقط, وقسط يصل الى 12 سنه");
+      setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
+      setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
       setText("#card-px .project-feature", "وحدات كاملة التشطيب مع فرص تسليم مبكر في مراحل مختارة.");
       setText("#card-badya .project-feature", "وحدات كاملة التشطيب مع خطط سداد مرنة وخيارات استلام فوري.");
     }
 
     if (page === "palm-hills-sahel-compounds") {
-      document.title = "Pearls Real Estate - مشروعات Palm Hills North Coast";
-      setHtml(".hero h1", "مشروعات <span class='keep-en' dir='ltr'>Palm Hills North Coast</span>");
-      setText(".hero p:nth-of-type(1)", "كل فرص Palm Hills في North Coast في صفحة واحدة، من Hacienda Waters إلى Hacienda Ras El Hekma.");
-      setText(".hero p:nth-of-type(2)", "يبدأ المقدم من 2.5% مع تقسيط حتى 12 سنة.");
-      setText("#overview .section-title", "لمحة سريعة: Palm Hills North Coast");
-      setText("#overview p", "مجموعة ساحلية راقية من Hacienda Waters حتى Ras El Hekma تجمع بين أسلوب صيفي متميز، وجاذبية إيجارية قوية، وخطط سداد مرنة.");
+      document.title = "Pearls Real Estate - Palm Hills North Coast Compounds";
+      setText(".hero h1", "Palm Hills North Coast Compounds");
+      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 2.5% فقط, قسط يصل الى 12 سنه");
+      setText(".hero p:nth-of-type(2)", "وحدات كامله التشطيب, وحدات مطله على البحر");
+      setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
+      setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
+      setText("#card-hacienda-raselhekma .badge-row:first-of-type .badge", "إطلاق جديد");
       setText("#card-hacienda-waters .project-feature", "خطط سداد مرنة مع وحدات كاملة التشطيب.");
       setText("#card-hacienda-blue .project-feature", "منازل ساحلية كاملة التشطيب مع خطط سداد مرنة.");
       setText("#card-hacienda-west .project-feature", "خيارات استلام فوري ووحدات كاملة التشطيب في عنوان ساحلي مميز.");
-      setText("#card-hacienda-raselhekma .project-feature", "إطلاق جديد بتشطيبات كاملة وتكييفات ومطابخ، مع إطلالات مائية لمعظم الوحدات.");
+      setText("#card-hacienda-raselhekma .project-feature", "إطلاق جديد بتشطيبات كاملة وتكييفات ومطابخ، مع شاطئ خاص بطول 4.8 كيلومتر، وإطلالات مائية لمعظم الوحدات.");
     }
 
     if (page === "privacy") {
@@ -703,7 +702,21 @@
     if (!slides.length || !dotsContainer) return;
 
     let index = 0;
-    let timer = null;
+
+    const prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.className = "carousel-arrow carousel-arrow-prev";
+    prevBtn.setAttribute("aria-label", "Previous image");
+    prevBtn.innerHTML = "<i class='fa-solid fa-chevron-left' aria-hidden='true'></i>";
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.className = "carousel-arrow carousel-arrow-next";
+    nextBtn.setAttribute("aria-label", "Next image");
+    nextBtn.innerHTML = "<i class='fa-solid fa-chevron-right' aria-hidden='true'></i>";
+
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
 
     dotsContainer.innerHTML = "";
     slides.forEach(function (_, i) {
@@ -719,35 +732,52 @@
     });
 
     function render(smooth) {
-      track.scrollTo({
-        left: index * track.clientWidth,
-        behavior: smooth === false ? "auto" : "smooth"
-      });
+      const target = slides[index];
+      const left = target ? target.offsetLeft : index * track.clientWidth;
+      const behavior = smooth === false ? "auto" : "smooth";
+
+      if (typeof track.scrollTo === "function") {
+        track.scrollTo({ left: left, behavior: behavior });
+      } else {
+        track.scrollLeft = left;
+      }
+
       const dots = dotsContainer.querySelectorAll(".dot");
       dots.forEach(function (dot, i) {
         dot.classList.toggle("active", i === index);
       });
     }
 
-    function start() {
-      stop();
-      timer = window.setInterval(function () {
-        index = (index + 1) % slides.length;
-        render();
-      }, 3500);
+    function getNearestIndex() {
+      let nearest = 0;
+      let minDelta = Number.POSITIVE_INFINITY;
+      const currentLeft = track.scrollLeft;
+
+      slides.forEach(function (slide, i) {
+        const delta = Math.abs(slide.offsetLeft - currentLeft);
+        if (delta < minDelta) {
+          minDelta = delta;
+          nearest = i;
+        }
+      });
+
+      return nearest;
     }
 
-    function stop() {
-      if (timer) {
-        window.clearInterval(timer);
-        timer = null;
-      }
-    }
+    prevBtn.addEventListener("click", function () {
+      index = getNearestIndex();
+      index = (index - 1 + slides.length) % slides.length;
+      render(true);
+    });
 
-    carousel.addEventListener("mouseenter", stop);
-    carousel.addEventListener("mouseleave", start);
+    nextBtn.addEventListener("click", function () {
+      index = getNearestIndex();
+      index = (index + 1) % slides.length;
+      render(true);
+    });
+
     track.addEventListener("scroll", function () {
-      const nextIndex = Math.round(track.scrollLeft / track.clientWidth);
+      const nextIndex = getNearestIndex();
       if (nextIndex !== index) {
         index = Math.max(0, Math.min(slides.length - 1, nextIndex));
         const dots = dotsContainer.querySelectorAll(".dot");
@@ -756,11 +786,27 @@
         });
       }
     });
-    start();
+
+    window.addEventListener("resize", function () {
+      render(false);
+    });
+
+    render(false);
   }
 
   function initCarousels() {
     document.querySelectorAll(".carousel").forEach(initCarousel);
+  }
+
+  function normalizePalmHillsEastHero() {
+    if (getPageKey() !== "palm-hills-compounds") return;
+    const paragraphs = document.querySelectorAll(".hero .hero-content > p");
+    if (paragraphs.length <= 1) return;
+
+    // Keep only the first hero paragraph to avoid mixed-language duplicate lines.
+    paragraphs.forEach(function (p, i) {
+      if (i > 0) p.remove();
+    });
   }
 
   function injectCookieBanner() {
@@ -796,6 +842,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initLeadAttribution();
+    normalizePalmHillsEastHero();
     const menuApi = initBurgerMenu();
     initLanguageControls();
     initMobileHeaderScroll(menuApi);
