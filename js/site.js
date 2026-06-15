@@ -171,7 +171,7 @@
 
     document.querySelectorAll(".whatsapp-action span").forEach(function (el) {
       rememberElement(el);
-      el.textContent = "المزيد من التفاصيل";
+      el.textContent = "تفاصيل اكثر";
     });
     document.querySelectorAll("[data-open-form]").forEach(function (el) {
       rememberElement(el);
@@ -218,7 +218,7 @@
       setText(".main-nav a[href='#contact-form']", "سجل الآن");
       setText(".hero h1", "Hyde Park Compounds");
       setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 5% مع تقسيط حتى 10 سنوات.");
-      setText(".hero p:nth-of-type(2)", "وحدات كاملة التشطيب متاحة.");
+      setText(".hero p:nth-of-type(2)", "الاسعار تبدأ من 5,900,000 جنيه.");
       setText("#overview .section-title", "اكتشف عالم هايد بارك من المجتمعات المتكاملة");
       setText("#overview p", "تطور هايد بارك مجتمعات نابضة بالحياة في أهم الوجهات المصرية، حيث تلتقي الطبيعة والتصميم والخدمات في تجربة متكاملة تعكس مفهومًا جديدًا للعيش والاستثمار.");
       setText("#available-projects .section-title", "المشروعات المتاحة");
@@ -297,6 +297,7 @@
       document.title = "Pearls Real Estate - Palm Hills East Compounds";
       setText(".hero h1", "Palm Hills East Compounds");
       setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 1.5% مع تقسيط حتى 12 سنة.");
+      setText(".hero p:nth-of-type(2)", "الاسعار تبدأ من 13,346,000 جنيه.");
       setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
       setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
       setText("#card-new-cairo .project-feature", "وحدات كاملة التشطيب متاحة مع خيارات استلام فوري في مراحل مختارة.");
@@ -306,7 +307,8 @@
     if (page === "palm-hills-west-compounds") {
       document.title = "Pearls Real Estate - Palm Hills West Compounds";
       setText(".hero h1", "Palm Hills West Compounds");
-      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 1.5% فقط, وقسط يصل الى 12 سنه");
+      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 1.5% فقط، وتقسيط حتى 12 سنة.");
+      setText(".hero p:nth-of-type(2)", "الاسعار تبدأ من 5,936,000 جنيه.");
       setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
       setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
       setText("#card-px .project-feature", "وحدات كاملة التشطيب مع فرص تسليم مبكر في مراحل مختارة.");
@@ -316,8 +318,8 @@
     if (page === "palm-hills-sahel-compounds") {
       document.title = "Pearls Real Estate - Palm Hills North Coast Compounds";
       setText(".hero h1", "Palm Hills North Coast Compounds");
-      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 2.5% فقط, قسط يصل الى 12 سنه");
-      setText(".hero p:nth-of-type(2)", "وحدات كامله التشطيب, وحدات مطله على البحر");
+      setText(".hero p:nth-of-type(1)", "مقدم يبدأ من 2.5% فقط، وتقسيط حتى 12 سنة.");
+      setText(".hero p:nth-of-type(2)", "الاسعار تبدأ من 11,700,000 جنيه.");
       setText("#overview .section-title", "بالم هيلز... وجهات متكاملة للحياة والاستثمار");
       setText("#overview p", "استكشف مجموعة من أبرز مشاريع بالم هيلز في شرق وغرب القاهرة والساحل الشمالي، حيث تلتقي المواقع الاستراتيجية بالتصميمات الراقية والخدمات المتكاملة لتقديم قيمة حقيقية للسكن والاستثمار.");
       setText("#card-hacienda-raselhekma .badge-row:first-of-type .badge", "إطلاق جديد");
@@ -539,6 +541,10 @@
       link.setAttribute("href", createWhatsAppHref(projectName));
       link.setAttribute("target", "_blank");
       link.setAttribute("rel", "noopener noreferrer");
+      const label = link.querySelector("span");
+      if (label && getCurrentLang() !== "ar") {
+        label.textContent = "More Info";
+      }
     });
   }
 
