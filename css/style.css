@@ -20,6 +20,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -930,6 +931,8 @@ select {
   border-radius: var(--radius-lg);
   background: linear-gradient(180deg, #0b0b0b, #121212);
   border: 1px solid rgba(204, 171, 68, 0.28);
+  max-width: 100%;
+  width: 100%;
 }
 
 .carousel-track {
@@ -941,6 +944,9 @@ select {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
   scrollbar-width: none;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .carousel-track::-webkit-scrollbar {
