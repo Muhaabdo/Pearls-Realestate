@@ -150,6 +150,7 @@
     setAllText(".main-nav a[href='disclaimer.html']", "إخلاء المسؤولية");
     setAllText(".main-nav a[href='hyde-park-compounds.html']", "هايد بارك");
     setAllText(".main-nav a[href='palm-hills-compounds.html']", "بالم هيلز");
+    setAllText(".main-nav a[href='la-vista-compounds.html']", "لافيستا");
 
     setAllText(".footer-links a[href='privacy.html']", "سياسة الخصوصية");
     setAllText(".footer-links a[href='disclaimer.html']", "إخلاء المسؤولية");
@@ -206,6 +207,7 @@
       setText(".grid.grid-3 article:nth-of-type(2) .card-body p", "فرص إطلاق قوية في New Cairo و New Capital مع أسعار مبكرة وأنظمة سداد مرنة.");
       setText(".grid.grid-3 article:nth-of-type(3) .card-body p", "مشروعات PX و Badya في غرب القاهرة بماستر بلان متكامل وخيارات تقسيط ممتدة.");
       setText(".grid.grid-3 article:nth-of-type(4) .card-body p", "امتلك في Palm Hills North Coast من Hacienda Waters حتى Ras El Hekma بتجربة صيفية راقية.");
+      setText(".grid.grid-3 article:nth-of-type(5) .card-body p", "اكتشف فرص La Vista بأحدث الأسعار والتوافر مع متابعة مباشرة من فريق المبيعات.");
       setAllText(".grid.grid-3 .btn.btn-primary", "تفاصيل المشروع");
     }
 
@@ -256,7 +258,7 @@
       setText(".modal-panel button[type='submit']", "إرسال الطلب");
     }
 
-    if (page === "palm-hills-compounds" || page === "palm-hills-west-compounds" || page === "palm-hills-sahel-compounds") {
+    if (page === "palm-hills-compounds" || page === "palm-hills-west-compounds" || page === "palm-hills-sahel-compounds" || page === "la-vista-compounds") {
       setText(".main-nav a[href='#overview']", "نظرة عامة");
       setText(".main-nav a[href='#available-projects']", "المشروعات المتاحة");
       setText(".main-nav a[href='#developer']", "عن المطور");
@@ -270,13 +272,13 @@
       setText("#developer .developer-kpi:nth-of-type(1) span", "مجتمعات كبيرة في المدن الأعلى نموًا بمصر");
       setText("#developer .developer-kpi:nth-of-type(2) strong", "مرن");
       setText("#developer .developer-kpi:nth-of-type(2) span", "خطط سداد مناسبة للمشتري الفعلي والمستثمر");
-      setText("#developer .developer-kpi:nth-of-type(3) strong", "موثوق");
-      setText("#developer .developer-kpi:nth-of-type(3) span", "أكثر من 35 مشروعًا بمعدلات طلب قوية");
-      setText("#developer .developer-card h3", "نبذة عن Palm Hills Developments");
-      setText("#developer .developer-points li:nth-of-type(1) span", "مطور مصري مُدرج بالبورصة بمحفظة تتجاوز 35 مشروعًا.");
-      setText("#developer .developer-points li:nth-of-type(2) span", "تأسست في 1997 وتعمل بهويتها الحالية منذ 2005 بقيادة Yasseen Mansour.");
-      setText("#developer .developer-points li:nth-of-type(3) span", "محفظة تطوير تتجاوز 34.6 مليون متر مربع بين السكني والتجاري والساحلي.");
-      setText("#developer .developer-trust", "مطور موثوق يجمع بين الحجم وخبرة التسليم وقيمة استثمارية طويلة الأجل.");
+      setText("#developer .developer-kpi:nth-of-type(3) strong", page === "la-vista-compounds" ? "دعم مباشر" : "موثوق");
+      setText("#developer .developer-kpi:nth-of-type(3) span", page === "la-vista-compounds" ? "استشارات سريعة لاختيار الوحدة المناسبة وخطة السداد" : "أكثر من 35 مشروعًا بمعدلات طلب قوية");
+      setText("#developer .developer-card h3", page === "la-vista-compounds" ? "نبذة عن مجتمعات La Vista" : "نبذة عن Palm Hills Developments");
+      setText("#developer .developer-points li:nth-of-type(1) span", page === "la-vista-compounds" ? "اسم بارز في تطوير المجتمعات السكنية والساحلية داخل السوق المصري." : "مطور مصري مُدرج بالبورصة بمحفظة تتجاوز 35 مشروعًا.");
+      setText("#developer .developer-points li:nth-of-type(2) span", page === "la-vista-compounds" ? "مشروعات تركز على جودة التصميم وتجربة معيشية متكاملة." : "تأسست في 1997 وتعمل بهويتها الحالية منذ 2005 بقيادة Yasseen Mansour.");
+      setText("#developer .developer-points li:nth-of-type(3) span", page === "la-vista-compounds" ? "التوافر والأسعار وأنظمة السداد تتجدد حسب المرحلة ونوع الوحدة." : "محفظة تطوير تتجاوز 34.6 مليون متر مربع بين السكني والتجاري والساحلي.");
+      setText("#developer .developer-trust", page === "la-vista-compounds" ? "تواصل معنا للحصول على أحدث قائمة وحدات مؤكدة وخطط السداد المتاحة." : "مطور موثوق يجمع بين الحجم وخبرة التسليم وقيمة استثمارية طويلة الأجل.");
       setText("label[for='bottom-name']", "الاسم الكامل *");
       setText("label[for='bottom-phone']", "رقم الهاتف *");
       setText("label[for='bottom-project']", "المشروع *");
@@ -327,6 +329,21 @@
       setText("#card-hacienda-blue .project-feature", "منازل ساحلية كاملة التشطيب مع خطط سداد مرنة.");
       setText("#card-hacienda-west .project-feature", "خيارات استلام فوري ووحدات كاملة التشطيب في عنوان ساحلي مميز.");
       setText("#card-hacienda-raselhekma .project-feature", "إطلاق جديد بتشطيبات كاملة وتكييفات ومطابخ، مع شاطئ خاص بطول 4.8 كيلومتر، وإطلالات مائية لمعظم الوحدات.");
+    }
+
+    if (page === "la-vista-compounds") {
+      document.title = "Pearls Real Estate - La Vista Compounds";
+      setText(".hero h1", "La Vista Compounds");
+      setText(".hero p:nth-of-type(1)", "يبدأ المقدم من 5% مع تقسيط حتى 10 سنوات.");
+      setText(".hero p:nth-of-type(2)", "الاسعار تبدأ من 5,945,000 جنيه.");
+      setText("#overview .section-title", "مجتمعات La Vista للسكن والاستثمار");
+      setText("#overview p", "استكشف فرص La Vista في القاهرة الجديدة والعاصمة الإدارية والشروق مع متابعة مباشرة للتوافر وأنظمة السداد واختيار الوحدة المناسبة.");
+      setText("#card-patio-town .project-feature", "تسليمات مبكرة مع وحدات متاحة كاملة التشطيب.");
+      setText("#card-patio-jade .project-feature", "إطلاق جديد بأسعار بداية قوية.");
+      setText("#card-la-vista-city .project-feature", "وحدات جاهزة للاستلام وجميع الوحدات كاملة التشطيب.");
+      setText("#card-patio-oro .project-feature", "وحدات متاحة للاستلام الفوري والتسليم المبكر، مع خيارات كاملة التشطيب.");
+      setText("#card-patio-riva .project-feature", "مشروع جديد بأسعار بداية مميزة.");
+      setText("#card-patio-elsherouk .project-feature", "وحدات متاحة للاستلام الفوري.");
     }
 
     if (page === "privacy") {
