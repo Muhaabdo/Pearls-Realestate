@@ -1012,6 +1012,20 @@ select {
   background: var(--color-gold);
 }
 
+body.page-la-vista-compounds {
+  overflow-x: hidden;
+}
+
+body.page-la-vista-compounds main,
+body.page-la-vista-compounds .section,
+body.page-la-vista-compounds .container {
+  overflow-x: hidden;
+}
+
+body.page-la-vista-compounds .carousel-track {
+  overscroll-behavior-x: contain;
+}
+
 @keyframes soft-bounce {
   0%,
   100% {
@@ -1072,7 +1086,7 @@ select {
   }
 
   .burger {
-    display: block;
+    display: inline-flex;
   }
 
   .main-nav {

@@ -856,7 +856,9 @@
     if (document.querySelector(".mobile-sticky-bar")) return;
     const bar = document.createElement("div");
     const callHref = "tel:+" + config.callPhone;
-    const waHref = "https://wa.me/" + config.whatsappPhone + "?text=" + encodeURIComponent("Hello, I am interested in your available projects.");
+    const heroWhatsApp = document.querySelector(".hero .js-whatsapp");
+    const heroWhatsAppHref = heroWhatsApp ? heroWhatsApp.getAttribute("href") : "";
+    const waHref = heroWhatsAppHref || createWhatsAppHref("your project");
     bar.className = "mobile-sticky-bar";
     bar.innerHTML = "<a class='mobile-sticky-btn call' href='" + callHref + "'><i class='fa-solid fa-phone'></i><span>Call</span></a><a class='mobile-sticky-btn whatsapp' href='" + waHref + "' target='_blank' rel='noopener noreferrer'><i class='fa-brands fa-whatsapp'></i><span>WhatsApp</span></a>";
     document.body.appendChild(bar);
@@ -864,6 +866,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    document.body.classList.add("page-" + getPageKey());
     initLeadAttribution();
     normalizePalmHillsEastHero();
     const menuApi = initBurgerMenu();
